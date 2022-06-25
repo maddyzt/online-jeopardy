@@ -10,7 +10,8 @@ import { cleanQuestionData } from './helpers/cleanQuestionData';
 
 function App(props) {
   const [question, setQuestion] = useState({});
-  
+  const [isDisplayed, setIsDisplayed] = useState(false);
+
   const fetchQuestionData = () => {
     return axios
     .get(`https://jservice.io/api/random`)
@@ -18,20 +19,26 @@ function App(props) {
   }
 
   const updateQuestion = () => {
+    setIsDisplayed(false)
     fetchQuestionData()
     .then((data) => {
-      for (let i = 0; i < data.length; i++) {
-      setQuestion(cleanQuestionData(data[i]))
-      }
+      setQuestion(cleanQuestionData(data[0]))   
     })
     .catch((err) => {console.log(err)})
   }
+ 
+  useEffect(() => {
+    setInterval(() => {
+      setIsDisplayed(true);
+    }, 15000);
+  }, []);
+
 
   return (
     <div className="App">
-      <CategoryHeader title="American History" />
-      <Question />
-      <Answer />
+      <CategoryHeader title={question.category} />
+      <Question questionText={question.questionText} value={question.value}/>
+      <Answer answerText={isDisplayed && question.answerText}/>
       <Button onClick={updateQuestion} />
       </div>
   );

@@ -1,8 +1,8 @@
-const Answer = () => {
+const Answer = (props) => {
   const { answerText } = props;
   return (
     <div>
-    <h1>Answer</h1>
+    <h1>Answer (will appear after 15 seconds)</h1>
     <p>
       {answerText}
     </p>
